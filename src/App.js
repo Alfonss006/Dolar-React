@@ -1,10 +1,10 @@
 import React from 'react';
 import './App.sass';
-import Cabeza from './components/head.js'
+import ObserveDolar from './pages/observeDolar';
 function App() {
   return (
     <div className="">
-      <Cabeza />
+      <ObserveDolar />
     </div>
   );
 }

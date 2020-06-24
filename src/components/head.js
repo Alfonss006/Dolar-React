@@ -1,5 +1,6 @@
 import React from 'react';
 import { Component } from 'react';
+import './sass/head.sass';
 
 class Cabeza extends Component {
     
@@ -18,7 +19,7 @@ class Cabeza extends Component {
                 hasta
             <input type="date"></input>
 
-            <input onClick={this.handleClick()} type="button" value="Ver Valor"/>
+            <input className="head_buttom" onClick={this.handleClick} type="button" value="Ver Valor"/>
        </div>);
     }
 }
