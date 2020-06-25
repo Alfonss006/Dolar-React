@@ -4,16 +4,16 @@ import './sass/Graph.sass'
 
 class Graph extends Component {
     
-    componentDidMount(){
+    componentDidUpdate(){
         this.createChart()
     }
     
     render() { 
         return ( 
         <div className="Graph_Chart">
-            <p>Valor minimo : </p>
-            <p>Valor maximo : </p>
-            <p>Valor Promedio : </p>
+            <p>Valor minimo : {Math.min(...this.props.data)}</p>
+            <p>Valor maximo : {Math.max(...this.props.data)}</p>
+            <p>Valor Promedio :</p>
             <canvas id="dolarChart"></canvas>
         </div> );
     }
@@ -24,10 +24,10 @@ class Graph extends Component {
         {
             type: 'line',
             data: {
-                labels: ['Dia x', 'Dia x+1', 'Dia x+2', 'Dia x+3', 'Dia x+4', 'Dia x+5'],
+                labels: this.props.datalabels,
                 datasets: [{
                     label: 'Valor dolar',
-                    data: [598.56, 602, 603, 597.3, 599, 601.03],
+                    data: this.props.data,
                     backgroundColor: [
                         'rgba(0, 186, 104, 1)'
                     ],

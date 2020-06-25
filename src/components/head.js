@@ -13,7 +13,7 @@ class Cabeza extends Component {
         return (
         <div>
             <div>
-                <h1> Valor del dolar Historico</h1>
+                <h1> Valor del dolar hist&oacute;rico</h1>
             </div>
             <input type="date"></input>
                 hasta
