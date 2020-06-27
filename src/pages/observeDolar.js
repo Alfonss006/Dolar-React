@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Cabeza from '../components/head';
 import Graph from '../components/Graph';
 import '../components/sass/head.sass';
-
+import axios from 'axios';
 
 class ObserveDolar extends Component {
     BaseURL = 'https://api.sbif.cl/api-sbifv3/recursos_api/dolar/';
@@ -11,39 +11,25 @@ class ObserveDolar extends Component {
         datalabels: [],
         data:[],
         isLoading: true,
-        error: null,
+        Error: null,
         end: new Date().toISOString().split("T")[0],
         start: null,
-        result: {
-            Mensaje: null,
-            Dolares: []
-        }
+        Mensaje: null
      }
 
     getDolars = async () => {
-         this.setState({ isLoading: true, result: {Mensaje: null} })
-         try {
-         await fetch(this.BaseURL + 'periodo/'
+        console.log("hay click")
+         this.setState({ isLoading: true, Error: null, Mensaje: null })
+         axios.get(this.BaseURL + 'periodo/'
          + this.state.startYear + '/'
          + this.state.startMonth+ '/dias_i/'
          + this.state.startDay + '/'
          + this.state.endYear + '/'
          + this.state.endMonth + '/dias_f/'
          + this.state.endDay + '?formato=json&apikey=' 
-         + this.apiKey)
-         .then(result => result.json(),(error)=> {
-            this.setState({isLoading:false, error: error})
-         })
-         .then(result => this.setState({result : result}), 
-           (error)=> {
-            this.setState({isLoading:false, error: error})
-         })
-         .catch (error => this.setState({isLoading:false, error: error}))
-         }catch(e){}
-         if(!this.state.result.Mensaje){
-             this.setState({isLoading: false, datalabels : this.state.result.Dolares.map(item => item.Fecha), data: this.state.result.Dolares.map(item => parseFloat(item.Valor)) })
-         }
-         this.render();
+         + this.apiKey).then(res => this.setState({isLoading: false, datalabels : res.data.Dolares.map(item => item.Fecha), data: res.data.Dolares.map(item => parseFloat(item.Valor)) })
+         //, error => this.setState( {error: error.response.status, Mensaje: error.response.data.Mensaje }))
+         ).catch(error => {this.setState( { Mensaje: error.response.data.Mensaje, Error: error.response.status })})
     }
 
     handleChange = e => {    
@@ -58,15 +44,19 @@ class ObserveDolar extends Component {
 
     render() { 
 
-        if(this.state.result.Mensaje){
-            console.dir(this.state.error)
+        if(this.state.Error){
             return(
                 <div className="container">
-                    <Cabeza/>
-                   <p> error {this.state.result.Mensaje}</p>
+                    <Cabeza
+                    end={this.state.Date} 
+                    handleChange={this.handleChange}
+                    getDolars={this.getDolars}
+                    start={this.state.start}/>
+                   <p> error {this.state.Mensaje}</p>
                 </div>
             )
         }
+        if(this.state.data && !this.state.isLoading){
         return (
             <div className="container">
                 
@@ -85,6 +75,17 @@ class ObserveDolar extends Component {
             
             </div>
          );
+        }
+        return (
+            <div className="container">
+                <Cabeza 
+                end={this.state.Date} 
+                handleChange={this.handleChange}
+                getDolars={this.getDolars}
+                start={this.state.start}
+                />
+            </div>
+        )
     }
 }
  

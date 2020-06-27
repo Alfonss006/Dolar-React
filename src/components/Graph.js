@@ -4,8 +4,9 @@ import './sass/Graph.sass'
 
 class Graph extends Component {
     
-    componentDidUpdate(){
+    componentDidMount(){
         this.createChart()
+
     }
     
     render() { 
@@ -13,7 +14,9 @@ class Graph extends Component {
         <div className="Graph_Chart">
             <p>Valor minimo : {Math.min(...this.props.data)}</p>
             <p>Valor maximo : {Math.max(...this.props.data)}</p>
-            <p>Valor Promedio :</p>
+            <p>Valor Promedio : {Math.round(
+                this.props.data.reduce((prev , current) => current += prev)/ this.props.data.length
+                )}</p>
             <canvas id="dolarChart"></canvas>
         </div> );
     }
@@ -32,7 +35,7 @@ class Graph extends Component {
                         'rgba(0, 186, 104, 1)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)'
+                        'rgba(9, 188, 9, 1)'
                     ],
                     borderWidth: 1
                 }]
